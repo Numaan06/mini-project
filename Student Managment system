@@ -1,0 +1,163 @@
+# ---------------------------------------------
+# STUDENT RECORD MANAGEMENT SYSTEM (CONSOLE)
+# ---------------------------------------------
+
+students = []   # List to store all student dictionaries
+
+
+# 1️⃣ ADD STUDENT
+def add_student():
+    print("\n---- Add New Student ----")
+    reg_no = input("Enter Register Number: ")
+    name = input("Enter Name: ")
+    dept = input("Enter Department: ")
+    year = input("Enter Year: ")
+
+    # Mobile number validation (10 digits only)
+    while True:
+        mobile = input("Enter Mobile Number (10 digits): ")
+        if mobile.isdigit() and len(mobile) == 10:
+            break
+        else:
+            print("❌ Invalid mobile number! Please enter exactly 10 digits.\n")
+
+    student = {
+        "reg_no": reg_no,
+        "name": name,
+        "department": dept,
+        "year": year,
+        "mobile": mobile
+    }
+
+    students.append(student)
+    print("\n✔ Student added successfully!\n")
+
+
+# 2️⃣ VIEW ALL STUDENTS
+def view_students():
+    print("\n---- All Students ----")
+    
+    if not students:
+        print("No student records found.\n")
+        return
+    
+    print("{:<12} {:<20} {:<15} {:<10} {:<12}".format(
+        "Reg No", "Name", "Department", "Year", "Mobile"))
+    print("-" * 70)
+
+    for s in students:
+        print("{:<12} {:<20} {:<15} {:<10} {:<12}".format(
+            s["reg_no"], s["name"], s["department"], s["year"], s["mobile"]
+        ))
+    print()
+
+
+# 3️⃣ SEARCH STUDENT
+def search_student():
+    print("\n---- Search Student ----")
+    print("1. Search by Register Number")
+    print("2. Search by Name")
+    
+    choice = input("Enter choice: ")
+
+    if choice == "1":
+        reg = input("Enter Register Number: ")
+        for s in students:
+            if s["reg_no"] == reg:
+                print("\nStudent Found:")
+                print(s, "\n")
+                return
+        print("\n❌ No student found with that Register Number.\n")
+
+    elif choice == "2":
+        name = input("Enter Name: ").lower()
+        for s in students:
+            if s["name"].lower() == name:
+                print("\nStudent Found:")
+                print(s, "\n")
+                return
+        print("\n❌ No student found with that Name.\n")
+
+    else:
+        print("Invalid choice.\n")
+
+
+# 4️⃣ UPDATE STUDENT
+def update_student():
+    print("\n---- Update Student ----")
+    reg = input("Enter Register Number to Update: ")
+
+    for s in students:
+        if s["reg_no"] == reg:
+            print("\nStudent Found!")
+            print("Leave field blank to keep old value.\n")
+
+            name = input("Enter New Name: ")
+            dept = input("Enter New Department: ")
+            year = input("Enter New Year: ")
+
+            # Mobile number update with validation
+            while True:
+                mobile = input("Enter New Mobile (10 digits): ")
+                if mobile == "":     # blank = keep old
+                    break
+                elif mobile.isdigit() and len(mobile) == 10:
+                    break
+                else:
+                    print("❌ Invalid mobile number! Enter exactly 10 digits.\n")
+
+            if name: s["name"] = name
+            if dept: s["department"] = dept
+            if year: s["year"] = year
+            if mobile: s["mobile"] = mobile
+
+            print("\n✔ Student details updated!\n")
+            return
+
+    print("\n❌ Student not found.\n")
+
+
+# 5️⃣ DELETE STUDENT
+def delete_student():
+    print("\n---- Delete Student ----")
+    reg = input("Enter Register Number to Delete: ")
+
+    for s in students:
+        if s["reg_no"] == reg:
+            students.remove(s)
+            print("\n✔ Student deleted successfully!\n")
+            return
+
+    print("\n❌ Student record not found.\n")
+
+
+# ---------------------------------------------
+# MAIN PROGRAM LOOP
+# ---------------------------------------------
+while True:
+    print("===== STUDENT RECORD MANAGEMENT SYSTEM =====")
+    print("1. Add Student")
+    print("2. View All Students")
+    print("3. Search Student")
+    print("4. Update Student")
+    print("5. Delete Student")
+    print("6. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        add_student()
+    elif choice == "2":
+        view_students()
+    elif choice == "3":
+        search_student()
+    elif choice == "4":
+        update_student()
+    elif choice == "5":
+        delete_student()
+    elif choice == "6":
+        print("\nExiting program... Goodbye! 👋")
+        break
+    else:
+        print("\n❌ Invalid choice! Please try again.\n")
+
